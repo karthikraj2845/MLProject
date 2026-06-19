@@ -1,0 +1,333 @@
+<html>
+
+<head>
+    <title>Student Performance Prediction</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg1: #fff8e7;
+            --bg2: #f2fff2;
+            --card: #ffffff;
+            --primary: #43a047;
+            --primary-dark: #2e7d32;
+            --secondary: #ffb74d;
+            --text: #2d3436;
+            --label: #636e72;
+            --border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background: linear-gradient(135deg,
+                    var(--bg1),
+                    var(--bg2));
+        }
+
+        .login {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.08);
+            animation: fadeIn .8s ease;
+        }
+
+        .login>h1 {
+            text-align: center;
+            color: var(--text);
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        legend {
+            text-align: center;
+            display: block;
+            width: 100%;
+            color: var(--label);
+            font-size: 1.15rem;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .mb-3 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            color: var(--label);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            font-size: 15px;
+            background: #fafafa;
+            transition: all .3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(67, 160, 71, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .btn {
+            grid-column: 1/-1;
+            margin-top: 10px;
+            padding: 16px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg,
+                    #66bb6a,
+                    #43a047);
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 12px 25px rgba(67, 160, 71, .25);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .result-card {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            background: #f7fff7;
+            border: 2px solid #dcedc8;
+        }
+
+        .result-card h2 {
+            color: var(--text);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .prediction {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media(max-width:768px) {
+
+            .login {
+                padding: 25px;
+            }
+
+            .login>h1 {
+                font-size: 1.8rem;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .prediction {
+                font-size: 2.3rem;
+            }
+        }
+
+        @media(max-width:480px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .login {
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .login>h1 {
+                font-size: 1.5rem;
+            }
+
+            legend {
+                font-size: 1rem;
+            }
+
+            .btn {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login">
+        <h1>Student Exam Performance Indicator</h1>
+
+        <form action="{{ url_for('predict_datapoint')}}" method="post">
+            <h1>
+                <legend>Student Exam Performance Prediction</legend>
+            </h1>
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select class="form-control" name="gender" placeholder="Enter you Gender" required>
+                    <option class="placeholder" selected disabled value="">Select your Gender</option>
+                    <option value="male">
+                        Male
+                    </option>
+                    <option value="female">
+                        Female
+                    </option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Race or Ethnicity</label>
+                <select class="form-control" name="ethnicity" placeholder="Enter you ethnicity" required>
+                    <option class="placeholder" selected disabled value="">Select Ethnicity</option>
+                    <option value="group A">
+                        Group A
+                    </option>
+                    <option value="group B">
+                        Group B
+                    </option>
+                    <option value="group C">
+                        Group C
+                    </option>
+                    <option value="group D">
+                        Group D
+                    </option>
+                    <option value="group E">
+                        Group E
+                    </option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Parental Level of Education</label>
+                <select class="form-control" name="parental_level_of_education" placeholder="Enter you Parent Education"
+                    required>
+                    <option class="placeholder" selected disabled value="">Select Parent Education</option>
+                    <option value="associate's degree">
+                        associate's degree
+                    </option>
+                    <option value="bachelor's degree">
+                        bachelor's degree
+                    </option>
+                    <option value="high school">
+                        high school
+                    </option>
+                    <option value="master's degree">
+                        master's degree
+                    </option>
+                    <option value="some college">
+                        some college
+                    </option>
+                    <option value="some high school">
+                        some high school
+                    </option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Lunch Type</label>
+                <select class="form-control" name="lunch" placeholder="Enter you Lunch" required>
+                    <option class="placeholder" selected disabled value="">Select Lunch Type</option>
+                    <option value="free/reduced">
+                        free/reduced
+                    </option>
+                    <option value="standard">
+                        standard
+                    </option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Test preparation Course</label>
+                <select class="form-control" name="test_preparation_course" placeholder="Enter you Course" required>
+                    <option class="placeholder" selected disabled value="">Select Test_course</option>
+                    <option value="none">
+                        None
+                    </option>
+                    <option value="completed">
+                        Completed
+                    </option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Writing Score out of 100</label>
+                <input class="form-control" type="number" name="writing_score" placeholder="Enter your Writing Score"
+                    min='0' max='100' />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Reading Score out of 100</label>
+                <input class="form-control" type="number" name="reading_score" placeholder="Enter your Reading Score"
+                    min='0' max='100' />
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Predict your Maths Score" required />
+            </div>
+        </form>
+        <h2>
+            {% if results %}
+            <div class="result-card">
+                <h2>Predicted Maths Score</h2>
+                <div class="prediction">{{ results }}</div>
+            </div>
+            {% endif %}
+        </h2>
+
+        <body>
+
+</html>
